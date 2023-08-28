@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract RealToken is ERC20 {
+    address public owner;
+    uint256 public maxSupply = 420690000000000; // Maximum token supply
+
+    constructor() ERC20("Real Token Name", "RTN") {
+        owner = msg.sender;
+        _mint(owner, maxSupply); // Mint the maximum supply to the contract owner
+    }
+
+    // This function can be called by the MiningContract to distribute tokens to users
+    function distributeTokens(address recipient, uint256 amount) external {
+        require(msg.sender == owner, "Only the contract owner can distribute tokens");
+        _transfer(owner, recipient, amount);
+    }
+}
