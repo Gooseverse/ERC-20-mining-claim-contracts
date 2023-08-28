@@ -1,0 +1,52 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MiningContract {
+    address public owner;
+    uint256 public maxSupply = 420690000000000;
+    uint256 public totalSupply;
+    uint256 public conversionRate = 5000000000; // 1 ETH = 5 billion coins
+    uint256 public miningEndTime;
+
+    mapping(address => uint256) public balances;
+    mapping(address => uint256) public miningTimestamps;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only the owner can call this function");
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function mine() external payable {
+        require(msg.value <= 5 ether, "You can mine with up to 5 ETH");
+        require(totalSupply < maxSupply, "Max supply reached");
+
+        uint256 coinsMined = msg.value * conversionRate;
+        totalSupply += coinsMined;
+        balances[msg.sender] += coinsMined;
+        miningTimestamps[msg.sender] = block.timestamp;
+    }
+
+    function takeSnapshot() external onlyOwner {
+        // Implement snapshot logic
+    }
+
+    function endMining() external onlyOwner {
+        miningEndTime = block.timestamp + 72 hours; // Set mining end time to 72 hours from now
+    }
+
+    function claimTokens() external {
+        require(miningEndTime > 0 && block.timestamp >= miningEndTime, "Claiming not yet allowed");
+        require(balances[msg.sender] > 0, "No tokens to claim");
+
+        // Transfer tokens to user's address using your token contract's transfer function
+        // Implement the transfer logic here
+        // Example: tokenContract.transfer(msg.sender, balances[msg.sender]);
+
+        // Reset user's balance after claiming
+        balances[msg.sender] = 0;
+    }
+}
