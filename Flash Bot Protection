@@ -1,0 +1,11 @@
+mapping(address => uint256) public miningCooldown;
+
+modifier cooldownElapsed() {
+    require(miningCooldown[msg.sender] <= block.timestamp, "Mining cooldown not elapsed");
+    _;
+}
+
+function mine(uint256 gasPrice) external payable notBlacklisted efficientGasPrice(gasPrice) cooldownElapsed {
+    miningCooldown[msg.sender] = block.timestamp + 1 days; // Cooldown for 1 day
+    // Mining logic
+}
