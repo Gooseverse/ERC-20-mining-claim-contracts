@@ -1,0 +1,8 @@
+modifier efficientGasPrice(uint256 gasPrice) {
+    require(tx.gasprice <= gasPrice, "Gas price too high");
+    _;
+}
+
+function mine(uint256 gasPrice) external payable notBlacklisted efficientGasPrice(gasPrice) {
+    // Mining logic
+}
