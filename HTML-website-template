@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mining and Claiming</title>
+</head>
+<body>
+    <h1>Mining and Claiming Tokens</h1>
+    <p>Welcome to our mining and claiming platform! Mine tokens by participating in the mining event and claim them later.</p>
+
+    <button id="mineButton">Mine</button>
+    <button id="claimButton" disabled>Claim</button>
+
+    <script>
+        const mineButton = document.getElementById("mineButton");
+        const claimButton = document.getElementById("claimButton");
+
+        // Simulate mining event
+        mineButton.addEventListener("click", async () => {
+            // Call your contract's mine function here
+            // Example: await miningContract.methods.mine().send({ from: userAddress, value: web3.utils.toWei("1", "ether") });
+
+            // Enable the claim button 72 hours after mining event ends
+            const currentTime = Math.floor(Date.now() / 1000);
+            const miningEndTime = /* Get the mining end time from your contract */;
+
+            if (currentTime >= miningEndTime + 72 * 3600) {
+                claimButton.disabled = false;
+            }
+
+            mineButton.disabled = true;
+        });
+
+        // Simulate claiming event
+        claimButton.addEventListener("click", async () => {
+            // Call your contract's claimTokens function here
+            // Example: await tokenContract.methods.claimTokens().send({ from: userAddress });
+
+            claimButton.disabled = true;
+        });
+    </script>
+</body>
+</html>
