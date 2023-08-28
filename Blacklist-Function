@@ -1,0 +1,10 @@
+mapping(address => bool) public isBlacklisted;
+
+modifier notBlacklisted() {
+    require(!isBlacklisted[msg.sender], "Address is blacklisted");
+    _;
+}
+
+function addToBlacklist(address account) external onlyOwner {
+    isBlacklisted[account] = true;
+}
